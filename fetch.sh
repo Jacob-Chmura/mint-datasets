@@ -1,30 +1,34 @@
 #!/usr/bin/env bash
 set -eou pipefail
 
-SAVE_DIRECTORY="./mint_datasets"
-MODE="processed"
+SAVE_DIRECTORY="./mint_data"
+VERSION_FILE="./VERSION"
+DATASETS_FILE="./DATASETS"
+DATASET=""
 
 print_usage() {
-    echo "Usage: $0 [--raw]"
+    echo "Usage: $0 [--dataset NAME]"
     echo
-    echo "Download the MiNT datasets from GitHub Releases."
+    echo "Download MiNT dataset(s) from GitHub Releases."
     echo
     echo "Options:"
-    echo "  --raw       Download raw dataset files (default: processed files)"
+    echo "  --dataset NAME   Download only the specified dataset (default: download all)"
+    echo "  -h, --help       Show this help message"
 }
 
 parse_args() {
-    for arg in "$@"; do
-        case "$arg" in
-            --raw)
-                MODE="raw"
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --dataset)
+                DATASET="$2"
+                shift 2
                 ;;
             -h|--help)
                 print_usage
                 exit 0
                 ;;
             *)
-                echo "Unknown option: $arg"
+                echo "Unknown option: $1"
                 print_usage
                 exit 1
                 ;;
@@ -33,35 +37,41 @@ parse_args() {
 }
 
 get_version() {
-    local version_file="./VERSION"
-
-    if [[ ! -f "$version_file" ]]; then
-        echo "VERSION file not found at $version_file" >&2
+    if [[ ! -f "$VERSION_FILE" ]]; then
+        echo "VERSION file not found at $VERSION_FILE" >&2
         exit 1
     fi
-
-    local version
-    version=$(<"$version_file")
-    echo "$version"
+    cat "$VERSION_FILE"
 }
 
-download_and_unzip() {
-    local name=$1
-    local target=$2
-    local url=$3
+get_dataset_names() {
+    if [[ ! -f "$DATASETS_FILE" ]]; then
+        echo "datasets.txt not found at $DATASETS_FILE" >&2
+        exit 1
+    fi
+    mapfile -t DATASETS < "$DATASETS_FILE"
+}
 
-    echo "[*] Downloading $name from $url to $SAVE_DIRECTORY/$name ..."
-    wget -q "$url/$name" -O "$SAVE_DIRECTORY/$name" || {
-        echo "ERROR: Failed to download $name from $url" >&2
+fetch_dataset() {
+    local dataset_name=$1
+    local url=$2
+
+    mkdir -p "$SAVE_DIRECTORY"
+
+    local zip_file="$SAVE_DIRECTORY/${dataset_name}.zip"
+    echo "[*] Downloading $dataset_name from $url to $zip_file ..."
+    wget -q "$url/${dataset_name}.zip" -O "$zip_file" || {
+        echo "ERROR: Failed to download $dataset_name from $url" >&2
         exit 1
     }
 
-    echo "[*] Extracting $name to $target ..."
-    unzip -qo "$SAVE_DIRECTORY/$name" -d "$target" || {
-        echo "ERROR: Failed to unzip $name into $target" >&2
+    echo "[*] Extracting $dataset_name ..."
+    unzip -qo "$zip_file" -d "$SAVE_DIRECTORY/$dataset_name" || {
+        echo "ERROR: Failed to unzip $dataset_name into $SAVE_DIRECTORY/$dataset_name" >&2
         exit 1
     }
-    rm -f "$SAVE_DIRECTORY/$name"
+
+    rm -f "$zip_file"
 }
 
 main() {
@@ -69,20 +79,25 @@ main() {
     mkdir -p "$SAVE_DIRECTORY"
 
     VERSION=$(get_version)
-    echo "[*] Fetching dataset $VERSION ..."
-
     BASE_URL="https://github.com/Jacob-Chmura/mint-datasets/releases/download/$VERSION"
-    #BASE_URL="http://localhost:8000"
 
-    if [[ "$MODE" == "processed" ]]; then
-        download_and_unzip "TGS_processed.zip" "$SAVE_DIRECTORY/processed" "$BASE_URL"
+    get_dataset_names
+
+    if [[ -n "$DATASET" ]]; then
+        echo "[*] Fetching MiNT dataset '$DATASET' $VERSION ..."
+        if [[ ! " ${DATASETS[*]} " =~ " $DATASET " ]]; then
+            echo "Dataset '$DATASET' not found in datasets.txt" >&2
+            exit 1
+        fi
+        fetch_dataset "$DATASET" "$BASE_URL"
     else
-        download_and_unzip "TGS_raw.zip" "$SAVE_DIRECTORY/raw" "$BASE_URL"
-        download_and_unzip "TGS_edgelists.zip" "$SAVE_DIRECTORY/edgelists" "$BASE_URL"
-        download_and_unzip "TGS_labels.zip" "$SAVE_DIRECTORY/labels" "$BASE_URL"
+        echo "[*] Fetching all MiNT datasets $VERSION ..."
+        for ds in "${DATASETS[@]}"; do
+            fetch_dataset "$ds" "$BASE_URL"
+        done
     fi
 
-    echo "[✓] Dataset $VERSION ready in $SAVE_DIRECTORY"
+    echo "[✓] MiNT Data $VERSION ready in $SAVE_DIRECTORY"
 }
 
 main "$@"

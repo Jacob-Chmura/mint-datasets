@@ -3,20 +3,18 @@ set -eou pipefail
 
 SAVE_DIRECTORY="./mint_datasets"
 MODE="processed"
+
 VERSION="v0.1"
 BASE_URL="https://github.com/Jacob-Chmura/mint-datasets/releases/download/$VERSION"
 BASE_URL="http://localhost:8000"
 
 print_usage() {
-    echo "Usage: $0 [SAVE_DIRECTORY] [--raw]"
+    echo "Usage: $0 [--raw]"
     echo
-    echo "Download the TGS dataset from GitHub Releases."
-    echo
-    echo "Arguments:"
-    echo "  SAVE_DIRECTORY   Optional path to store datasets (default: ./mint_datastes)"
+    echo "Download the MiNT datasets from GitHub Releases."
     echo
     echo "Options:"
-    echo "  --raw            Download raw dataset files (default: processed files)"
+    echo "  --raw       Download raw dataset files (default: processed files)"
 }
 
 parse_args() {
@@ -30,7 +28,9 @@ parse_args() {
                 exit 0
                 ;;
             *)
-                SAVE_DIRECTORY="$arg"
+                echo "Unknown option: $arg"
+                print_usage
+                exit 1
                 ;;
         esac
     done

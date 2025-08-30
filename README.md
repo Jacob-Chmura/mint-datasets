@@ -3,7 +3,7 @@
 Token datasets from the paper [**MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs**](https://arxiv.org/abs/2406.10426).
 
 > \[!NOTE\]
-> Only test token data is currently available for public download.
+> Only test token data is currently publically available.
 
 ### Quick Start
 
@@ -13,7 +13,7 @@ To fetch all the token datasets at once:
 curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash
 ```
 
-> \[!NOTE\]
+> \[!IMPORTANT\]
 > ~12.5 MB of storage is required for all the data.
 
 You can also fetch a single dataset with the `--token` flag:
@@ -28,13 +28,13 @@ Each token dataset will be stored in ```./tokens_data/{TOKEN_NAME}.csv``` with t
 
 | Column Name | Type |  Description |
 |----------|-------------|------|
-| `blockNumber` | `int` | Token Block ID |
-| `timestamp` | `int` | Unix Epoch |
-| `tokenAddress` | `string` | Token Address |
-| `from` | `string` | Source Wallet Address |
-| `to` | `string` | Destination Wallet Address |
-| `value` | `float` | Value of Transaction |
-| `fileBlock` | `int` | BlockFile ID |
+| `blockNumber` | int | Token Block ID |
+| `timestamp` | int | Unix Epoch |
+| `tokenAddress` | string | Token Address |
+| `from` | string | Source Wallet Address |
+| `to` | string | Destination Wallet Address |
+| `value` | float | Value of Transaction |
+| `fileBlock` | int | BlockFile ID |
 
 
 ### Citation
@@ -50,7 +50,7 @@ Please cite the paper if you use these datasets:
 }
 ```
 
-### Tokens List
+### Available Tokens
 
 | Token Name | Size (MB) Unzipped    | Size (MB) Compressed |
 |--------------|---------------------|----------------------|

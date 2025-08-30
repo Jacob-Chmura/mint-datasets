@@ -1,6 +1,9 @@
 ## MiNT Datasets
 
-Token datasets for the paper [**MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs**](https://arxiv.org/abs/2406.10426).
+Token datasets from the paper [**MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs**](https://arxiv.org/abs/2406.10426).
+
+> \[!NOTE\]
+> Only test token data is currently available for public download.
 
 ### Quick Start
 
@@ -24,14 +27,14 @@ curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fet
 Each token dataset will be stored in ```./tokens_data/{TOKEN_NAME}.csv``` with the following schema:
 
 | Column Name | Type |  Description |
-|----------|:-------------:|------:|
-| blockNumber | int | Token Block ID |
-| timestamp | int | Unix Epoch |
-| tokenAddress| string | Token Address |
-| from | string | Source Wallet Address |
-| to | string | Destination Wallet Address |
-| value | float | Value of Transaction |
-| fileBlock | int | BlockFile ID |
+|----------|-------------|------|
+| `blockNumber` | `int` | Token Block ID |
+| `timestamp` | `int` | Unix Epoch |
+| `tokenAddress` | `string` | Token Address |
+| `from` | `string` | Source Wallet Address |
+| `to` | `string` | Destination Wallet Address |
+| `value` | `float` | Value of Transaction |
+| `fileBlock` | `int` | BlockFile ID |
 
 
 ### Citation
@@ -47,7 +50,7 @@ Please cite the paper if you use these datasets:
 }
 ```
 
-### Datasets List
+### Tokens List
 
 | Token Name | Size (MB) Unzipped    | Size (MB) Compressed |
 |--------------|---------------------|----------------------|

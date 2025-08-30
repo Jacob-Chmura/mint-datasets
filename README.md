@@ -38,7 +38,20 @@ Each dataset will be stored in ```./mint_data/{DATASET_NAME}``` with the followi
   | TODO | TODO | TODO |
 
 
-#### Datasets List
+### Citation
+
+Please cite the paper if you use these datasets:
+
+```
+@article{Shamsi2025MiNT,
+  title        = {MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs},
+  author       = {Shamsi, Kiarash and others},
+  journal      = {arXiv preprint arXiv:2406.10426},
+  year         = {2025},
+}
+```
+
+### Datasets List
 
 | Dataset Name | Size (MB) Unzipped | Size (MB) Compressed |
 |--------------|------------------|--------------------|
@@ -127,16 +140,3 @@ Each dataset will be stored in ```./mint_data/{DATASET_NAME}``` with the followi
 | YFII         | RAW_MB           | ZIP_MB             |
 | Yf-DAI       | RAW_MB           | ZIP_MB             |
 
-
-### Citation
-
-Please cite the paper if you use these datasets:
-
-```
-@article{Shamsi2025MiNT,
-  title        = {MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs},
-  author       = {Shamsi, Kiarash and others},
-  journal      = {arXiv preprint arXiv:2406.10426},
-  year         = {2025},
-}
-```

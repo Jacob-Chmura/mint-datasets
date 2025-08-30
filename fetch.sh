@@ -2,9 +2,10 @@
 set -eou pipefail
 
 SAVE_DIRECTORY="./tokens_data"
-VERSION_FILE="./VERSION"
-TOKENS_FILE="./TOKENS"
 TOKENS=""
+GITHUB_REPO="Jacob-Chmura/mint-datasets"
+GITHUB_RAW_BASE="https://raw.githubusercontent.com/$GITHUB_REPO/master"
+GITHUB_RELEASE_BASE="https://github.com/$GITHUB_REPO/releases/download"
 
 print_usage() {
     echo "Usage: $0 [--dataset NAME]"
@@ -37,19 +38,20 @@ parse_args() {
 }
 
 get_version() {
-    if [[ ! -f "$VERSION_FILE" ]]; then
-        echo "VERSION file not found at $VERSION_FILE" >&2
+    local version_url="$GITHUB_RAW_BASE/VERSION"
+    VERSION=$(curl -sSf "$version_url") || {
+        echo "ERROR: Failed to fetch VERSION from $version_url" >&2
         exit 1
-    fi
-    cat "$VERSION_FILE"
+    }
+    echo "$VERSION"
 }
 
 get_token_names() {
-    if [[ ! -f "$TOKENS_FILE" ]]; then
-        echo "TOKENS file not found at $TOKENS_FILE" >&2
+    local tokens_url="$GITHUB_RAW_BASE/TOKENS"
+    mapfile -t DATASETS < <(curl -sSf "$tokens_url") || {
+        echo "ERROR: Failed to fetch TOKENS from $tokens_url" >&2
         exit 1
-    fi
-    mapfile -t DATASETS < "$TOKENS_FILE"
+    }
 }
 
 fetch_dataset() {
@@ -79,7 +81,7 @@ main() {
     mkdir -p "$SAVE_DIRECTORY"
 
     VERSION=$(get_version)
-    BASE_URL="https://github.com/Jacob-Chmura/mint-datasets/releases/download/$VERSION"
+    BASE_URL="$GITHUB_RELEASE_BASE/$VERSION"
 
     get_token_names
 

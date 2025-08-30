@@ -59,13 +59,12 @@ fetch_dataset() {
     mkdir -p "$SAVE_DIRECTORY"
 
     local zip_file="$SAVE_DIRECTORY/${dataset_name}.zip"
-    echo "[*] Downloading $dataset_name from $url to $zip_file ..."
+    echo "[*] Downloading $dataset_name from $url to $SAVE_DIRECTORY/$dataset_name..."
     wget -q "$url/${dataset_name}.zip" -O "$zip_file" || {
         echo "ERROR: Failed to download $dataset_name from $url" >&2
         exit 1
     }
 
-    echo "[*] Extracting $dataset_name ..."
     unzip -qo "$zip_file" -d "$SAVE_DIRECTORY/$dataset_name" || {
         echo "ERROR: Failed to unzip $dataset_name into $SAVE_DIRECTORY/$dataset_name" >&2
         exit 1

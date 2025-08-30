@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 set -eou pipefail
 
-SAVE_DIRECTORY="./mint_data"
+SAVE_DIRECTORY="./tokens_data"
 VERSION_FILE="./VERSION"
-DATASETS_FILE="./DATASETS"
-DATASET=""
+TOKENS_FILE="./TOKENS"
+TOKENS=""
 
 print_usage() {
     echo "Usage: $0 [--dataset NAME]"
     echo
-    echo "Download MiNT dataset(s) from GitHub Releases."
+    echo "Download MiNT token dataset(s) from GitHub Releases."
     echo
     echo "Options:"
-    echo "  --dataset NAME   Download only the specified dataset (default: download all)"
+    echo "  --token NAME     Download only the specified token data (default: download all)"
     echo "  -h, --help       Show this help message"
 }
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --dataset)
-                DATASET="$2"
+            --token)
+                TOKENS="$2"
                 shift 2
                 ;;
             -h|--help)
@@ -44,12 +44,12 @@ get_version() {
     cat "$VERSION_FILE"
 }
 
-get_dataset_names() {
-    if [[ ! -f "$DATASETS_FILE" ]]; then
-        echo "datasets.txt not found at $DATASETS_FILE" >&2
+get_token_names() {
+    if [[ ! -f "$TOKENS_FILE" ]]; then
+        echo "TOKENS file not found at $TOKENS_FILE" >&2
         exit 1
     fi
-    mapfile -t DATASETS < "$DATASETS_FILE"
+    mapfile -t DATASETS < "$TOKENS_FILE"
 }
 
 fetch_dataset() {
@@ -59,14 +59,15 @@ fetch_dataset() {
     mkdir -p "$SAVE_DIRECTORY"
 
     local zip_file="$SAVE_DIRECTORY/${dataset_name}.zip"
-    echo "[*] Downloading $dataset_name from $url to $SAVE_DIRECTORY/$dataset_name..."
+
+    echo "[*] Downloading token $dataset_name from $url..."
     wget -q "$url/${dataset_name}.zip" -O "$zip_file" || {
-        echo "ERROR: Failed to download $dataset_name from $url" >&2
+        echo "ERROR: Failed to download $dataset_name from $url to $zip_file" >&2
         exit 1
     }
 
-    unzip -qo "$zip_file" -d "$SAVE_DIRECTORY/$dataset_name" || {
-        echo "ERROR: Failed to unzip $dataset_name into $SAVE_DIRECTORY/$dataset_name" >&2
+    unzip -qo -j "$zip_file" -d "$SAVE_DIRECTORY" || {
+        echo "ERROR: Failed to unzip $dataset_name into $SAVE_DIRECTORY" >&2
         exit 1
     }
 
@@ -80,17 +81,17 @@ main() {
     VERSION=$(get_version)
     BASE_URL="https://github.com/Jacob-Chmura/mint-datasets/releases/download/$VERSION"
 
-    get_dataset_names
+    get_token_names
 
-    if [[ -n "$DATASET" ]]; then
-        echo "[*] Fetching MiNT dataset '$DATASET' $VERSION ..."
-        if [[ ! " ${DATASETS[*]} " =~ " $DATASET " ]]; then
-            echo "Dataset '$DATASET' not found in datasets.txt" >&2
+    if [[ -n "$TOKENS" ]]; then
+        echo "[*] Fetching MiNT token dataset '$TOKENS' $VERSION ..."
+        if [[ ! " ${DATASETS[*]} " =~ " $TOKENS " ]]; then
+            echo "Dataset '$TOKENS' not found in TOKENS" >&2
             exit 1
         fi
-        fetch_dataset "$DATASET" "$BASE_URL"
+        fetch_dataset "$TOKENS" "$BASE_URL"
     else
-        echo "[*] Fetching all MiNT datasets $VERSION ..."
+        echo "[*] Fetching all MiNT token datasets $VERSION ..."
         for ds in "${DATASETS[@]}"; do
             fetch_dataset "$ds" "$BASE_URL"
         done

@@ -207,4 +207,4 @@ marimo/_lsp/
 __marimo__/
 
 # Datasets
-mint_data
+tokens_data

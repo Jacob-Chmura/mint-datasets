@@ -10,7 +10,7 @@ Token datasets from the paper [**MiNT: Multi-Network Training for Transfer Learn
 To fetch all the token datasets at once:
 
 ```sh
-curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash
+curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/master/fetch.sh | bash
 ```
 
 > \[!IMPORTANT\]
@@ -19,7 +19,7 @@ curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fet
 You can also fetch a single dataset with the `--token` flag:
 
 ```sh
-curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash -s -- --token TOKEN_NAME
+curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/master/fetch.sh | bash -s -- --token TOKEN_NAME
 ```
 
 #### Data Format

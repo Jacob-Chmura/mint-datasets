@@ -1,10 +1,10 @@
 ## MiNT Datasets
 
-This repository hosts the datasets used in the paper [**MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs**](https://arxiv.org/abs/2406.10426).
+This repository hosts the datasets for the paper [**MiNT: Multi-Network Training for Transfer Learning on Temporal Graphs**](https://arxiv.org/abs/2406.10426).
 
 ### Quick Start
 
-Fetch and extract all dataset files in one line:
+Fetch the datasets in one line:
 
 ```sh
 curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash
@@ -13,12 +13,12 @@ curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fet
 The datasets will be written to ```./mint_datasets/```.
 
 > \[!NOTE\]
-> The datasets require xx.xx GB of storage.
+> xx.xx GB of storage is required.
 
 #### Raw Files
 
-By default, the script will download pre-processed files according to [preprocess.py](./preprocess.py).
-You can optionally fetch the raw files only by issuing:
+By default, the script downloads files processed according to [preprocess.py](./preprocess.py).
+You can optionally fetch the raw files via:
 
 ```sh
 curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash --raw
@@ -37,6 +37,5 @@ Please cite the paper if you use these datasets:
   author       = {Shamsi, Kiarash and others},
   journal      = {arXiv preprint arXiv:2406.10426},
   year         = {2025},
-  url          = {https://arxiv.org/abs/2406.10426}
 }
 ```

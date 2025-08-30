@@ -24,9 +24,6 @@ You can optionally fetch the raw files via:
 curl -LsSf https://raw.githubusercontent.com/Jacob-Chmura/mint-datasets/main/fetch.sh | bash --raw
 ```
 
-> \[!NOTE\]
-> The raw files require xx.xx GB of storage.
-
 ### Citation
 
 Please cite the paper if you use these datasets:

@@ -48,13 +48,20 @@ get_version() {
 
 get_token_names() {
     local tokens_url="$GITHUB_RAW_BASE/TOKENS"
+    local tmpfile=$(mktemp)
+
+    curl -sSf "$tokens_url" > "$tmpfile" || {
+        echo "ERROR: Failed to fetch TOKENS from $tokens_url" >&2
+        rm -f "$tmpfile"
+        exit 1
+    }
+
     DATASETS=()
     while IFS= read -r line; do
         DATASETS+=("$line")
-    done < <(curl -sSf "$tokens_url") || {
-        echo "ERROR: Failed to fetch TOKENS from $tokens_url" >&2
-        exit 1
-    }
+    done < "$tmpfile"
+
+    rm -f "$tmpfile"
 }
 
 fetch_dataset() {

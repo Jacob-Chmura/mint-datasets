@@ -73,7 +73,7 @@ fetch_dataset() {
     local zip_file="$SAVE_DIRECTORY/${dataset_name}.zip"
 
     echo "[*] Downloading token $dataset_name from $url..."
-    wget -q "$url/${dataset_name}.zip" -O "$zip_file" || {
+    curl -fLsS "$url/${dataset_name}.zip" -o "$zip_file" || {
         echo "ERROR: Failed to download $dataset_name from $url to $zip_file" >&2
         exit 1
     }
